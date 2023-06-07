@@ -1,6 +1,7 @@
 package ru.job4j.auth.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,13 +47,25 @@ public class PersonController {
 
     @PutMapping("/")
     public ResponseEntity<Void> update(@RequestBody Person person) {
-        personService.update(person);
-        return ResponseEntity.ok().build();
+        ResponseEntity<Void> rsl;
+        try {
+            personService.update(person);
+            rsl = ResponseEntity.ok().build();
+        } catch (RuntimeException ex) {
+            rsl = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return rsl;
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") int id) {
-        personService.deleteById(id);
-        return ResponseEntity.ok().build();
+        ResponseEntity<Void> rsl;
+        try {
+            personService.deleteById(id);
+            rsl = ResponseEntity.ok().build();
+        } catch (RuntimeException ex) {
+            rsl = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return rsl;
     }
 }

@@ -12,7 +12,7 @@
     <artifactId>auth</artifactId>
     <version>1.0</version>
     <name>auth</name>
-    <description>auth</description>
+    <description>Модуль авторизации пользователей</description>
 
     <dependencies>
 
