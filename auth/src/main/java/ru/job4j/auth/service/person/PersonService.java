@@ -1,4 +1,4 @@
-package ru.job4j.auth.service;
+package ru.job4j.auth.service.person;
 
 import ru.job4j.auth.domain.Person;
 
@@ -23,6 +23,14 @@ public interface PersonService {
      * @return возвращает результат операции в виде boolean
      */
     boolean update(Person person);
+
+    /**
+     * Находит пользователя в хранилище по login
+     * @param login login пользователя
+     * @return Optional.of(person), если пользователь найден,
+     * иначе Optional.empty()
+     */
+    Optional<Person> findByLogin(String login);
 
     /**
      * Находит пользователя в хранилище по id

@@ -1,9 +1,9 @@
-package ru.job4j.auth.service;
+package ru.job4j.auth.service.person;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.auth.domain.Person;
-import ru.job4j.auth.repository.PersonCrudRepository;
+import ru.job4j.auth.repository.PersonRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,14 +13,13 @@ import java.util.Optional;
  */
 @Service
 @AllArgsConstructor
-public class PersonDataService implements PersonService {
+public class PersonServiceImpl implements PersonService {
 
-    private final PersonCrudRepository repository;
+    private final PersonRepository repository;
 
     @Override
     public Person save(Person person) {
-        repository.save(person);
-        return person;
+        return repository.save(person);
     }
 
     @Override
@@ -32,6 +31,11 @@ public class PersonDataService implements PersonService {
             rsl = true;
         }
         return rsl;
+    }
+
+    @Override
+    public Optional<Person> findByLogin(String login) {
+        return repository.findByLogin(login);
     }
 
     @Override

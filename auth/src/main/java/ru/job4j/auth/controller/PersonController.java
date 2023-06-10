@@ -1,12 +1,11 @@
 package ru.job4j.auth.controller;
 
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.auth.domain.Person;
-import ru.job4j.auth.service.PersonService;
+import ru.job4j.auth.service.person.PersonService;
 
 import java.util.List;
 
@@ -15,13 +14,17 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/person")
-@AllArgsConstructor
 public class PersonController {
 
     /**
      * зависимость от сервиса пользователей
      */
     private final PersonService personService;
+
+    public PersonController(@Qualifier("personServiceImpl")
+                            PersonService personService) {
+        this.personService = personService;
+    }
 
     @GetMapping("/")
     public List<Person> findAll() {
