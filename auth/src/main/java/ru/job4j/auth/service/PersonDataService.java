@@ -24,8 +24,14 @@ public class PersonDataService implements PersonService {
     }
 
     @Override
-    public void update(Person person) {
-        repository.save(person);
+    public boolean update(Person person) {
+        boolean rsl = false;
+        Optional<Person> optionalPerson = repository.findById(person.getId());
+        if (optionalPerson.isPresent()) {
+            repository.save(person);
+            rsl = true;
+        }
+        return rsl;
     }
 
     @Override
@@ -34,8 +40,14 @@ public class PersonDataService implements PersonService {
     }
 
     @Override
-    public void deleteById(int id) {
-        repository.deleteById(id);
+    public boolean deleteById(int id) {
+        boolean rsl = false;
+        Optional<Person> optionalPerson = repository.findById(id);
+        if (optionalPerson.isPresent()) {
+            repository.deleteById(id);
+            rsl = true;
+        }
+        return rsl;
     }
 
     @Override

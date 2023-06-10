@@ -47,25 +47,13 @@ public class PersonController {
 
     @PutMapping("/")
     public ResponseEntity<Void> update(@RequestBody Person person) {
-        ResponseEntity<Void> rsl;
-        try {
-            personService.update(person);
-            rsl = ResponseEntity.ok().build();
-        } catch (RuntimeException ex) {
-            rsl = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return rsl;
+        return personService.update(person) ? ResponseEntity.ok().build()
+                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") int id) {
-        ResponseEntity<Void> rsl;
-        try {
-            personService.deleteById(id);
-            rsl = ResponseEntity.ok().build();
-        } catch (RuntimeException ex) {
-            rsl = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return rsl;
+        return personService.deleteById(id) ? ResponseEntity.ok().build()
+                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }

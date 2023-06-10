@@ -20,8 +20,9 @@ public interface PersonService {
     /**
      * Обновляет данные о пользователе в хранилище
      * @param person пользователь
+     * @return возвращает результат операции в виде boolean
      */
-    void update(Person person);
+    boolean update(Person person);
 
     /**
      * Находит пользователя в хранилище по id
@@ -32,15 +33,15 @@ public interface PersonService {
     Optional<Person> findById(int id);
 
     /**
-     * Производит удаления пользователя в хранилище по id
+     * Производит удаление пользователя в хранилище по id
      * @param id идентификатор пользователя
+     * @return возвращает результат операции в виде boolean
      */
-    void deleteById(int id);
+    boolean deleteById(int id);
 
     /**
      * Находит всех пользователей в хранилище
      * @return список пользователей
      */
     List<Person> findAll();
-
 }
