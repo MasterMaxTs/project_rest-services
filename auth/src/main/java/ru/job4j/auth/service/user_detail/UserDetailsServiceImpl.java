@@ -1,7 +1,6 @@
 package ru.job4j.auth.service.user_detail;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,14 +18,10 @@ import static java.util.Collections.emptyList;
  * SecurityContextHolder
  */
 @Service
+@AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final PersonService personService;
-
-    public UserDetailsServiceImpl(@Qualifier("personServiceImpl")
-                                  PersonService personService) {
-        this.personService = personService;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username)
