@@ -1,6 +1,7 @@
 package ru.job4j.auth.service.person;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.job4j.auth.domain.Person;
 import ru.job4j.auth.repository.PersonCrudRepository;
@@ -13,25 +14,33 @@ import java.util.Optional;
  */
 @Service
 @AllArgsConstructor
+@Slf4j
 public class PersonDataService implements PersonService {
 
     private final PersonCrudRepository repository;
 
     @Override
-    public Person save(Person person) {
-        repository.save(person);
-        return person;
+    public boolean save(Person person) {
+        boolean rsl = false;
+        try {
+            repository.save(person);
+            log.info("User with id={} created/updated successfully!", person.getId());
+            rsl = true;
+        } catch (RuntimeException ex) {
+           log.error("User creation/update error. Invalid username={}!",
+                        person.getLogin());
+        }
+        return rsl;
     }
 
     @Override
     public boolean update(Person person) {
-        boolean rsl = false;
         Optional<Person> optionalPerson = repository.findById(person.getId());
         if (optionalPerson.isPresent()) {
-            repository.save(person);
-            rsl = true;
+            return save(person);
         }
-        return rsl;
+        log.error("User with id={} update error!", person.getId());
+        return false;
     }
 
     @Override
@@ -50,8 +59,10 @@ public class PersonDataService implements PersonService {
         Optional<Person> optionalPerson = repository.findById(id);
         if (optionalPerson.isPresent()) {
             repository.deleteById(id);
+            log.info("User with id={} deleted successfully.", id);
             rsl = true;
         }
+        log.error("User with id={} delete error!", id);
         return rsl;
     }
 

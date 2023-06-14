@@ -24,14 +24,9 @@ public class RegistrationController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(@RequestBody Person person) {
-        ResponseEntity<Void> rsl;
-        try {
-            person.setPassword(encoder.encode(person.getPassword()));
-            personService.save(person);
-            rsl = ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (RuntimeException ex) {
-            rsl = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return rsl;
+        person.setPassword(encoder.encode(person.getPassword()));
+        return personService.save(person)
+                ? ResponseEntity.status(HttpStatus.CREATED).build()
+                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }

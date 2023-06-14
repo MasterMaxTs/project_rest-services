@@ -13,9 +13,9 @@ public interface PersonService {
     /**
      * Сохраняет пользователя в хранилище
      * @param person пользователь
-     * @return пользователя с проинициализированным id
+     * @return возвращает результат операции в виде boolean
      */
-    Person save(Person person);
+    boolean save(Person person);
 
     /**
      * Обновляет данные о пользователе в хранилище
