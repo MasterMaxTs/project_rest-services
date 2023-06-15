@@ -1,4 +1,4 @@
-package ru.job4j.auth.api.security;
+package ru.job4j.auth.config.security;
 
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-import static ru.job4j.auth.api.security.JWTConstants.*;
+import static ru.job4j.auth.config.security.JWTConstants.*;
 
 /**
  * Фильтр, выполняющий процедуру аутентификации и генерации токена

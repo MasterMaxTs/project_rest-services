@@ -1,4 +1,4 @@
-package ru.job4j.auth.api.security;
+package ru.job4j.auth.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static ru.job4j.auth.api.security.JWTConstants.*;
+import static ru.job4j.auth.config.security.JWTConstants.*;
 
 /**
  * Фильтр, выполняющий процедуру авторизации.

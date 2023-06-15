@@ -1,4 +1,4 @@
-package ru.job4j.auth.config;
+package ru.job4j.auth.config.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import ru.job4j.auth.api.security.JWTAuthenticationFilter;
-import ru.job4j.auth.api.security.JWTAuthorizationFilter;
 
 /**
  * Класс конфигурации WebSecurity
