@@ -7,10 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ru.job4j.auth.util.validation.ValidateUtil;
 import ru.job4j.auth.domain.Person;
-import ru.job4j.auth.exception.EmptyResultException;
 import ru.job4j.auth.service.person.PersonService;
+import ru.job4j.auth.util.validation.ValidateUtil;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -41,8 +40,13 @@ public class PersonController {
     private final ObjectMapper objectMapper;
 
     @GetMapping("/")
-    public List<Person> findAll() throws EmptyResultException {
-        return ValidateUtil.checkEmptyResult(personService.findAll());
+    public ResponseEntity<List<Person>> findAll() {
+        List<Person> persons = personService.findAll();
+        if (ValidateUtil.checkEmptyResult(persons)) {
+            throw new ResponseStatusException(HttpStatus.OK, "Return result is empty!");
+        }
+        return ResponseEntity.ok(persons);
+
     }
 
     @GetMapping("/{id}")
@@ -59,12 +63,10 @@ public class PersonController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Void> update(@RequestBody Map<String, String> body) {
-        var username = body.get("login");
-        var password = body.get("password");
+    public ResponseEntity<Void> update(@RequestBody Person person) {
+        var username = person.getLogin();
+        var password = person.getPassword();
         ValidateUtil.validateUserCredential(username, password);
-        Person person = new Person();
-        person.setLogin(username);
         person.setPassword(encoder.encode(password));
         return personService.update(person)
                 ? ResponseEntity.ok().build()
@@ -80,15 +82,15 @@ public class PersonController {
 
     /**
      * Метод отлавливает  и обрабатывает исключения типа
-     * EmptyResultException, возникающих в контроллере,
+     * IllegalArgumentException, возникающих в контроллере,
      * меняет статус и тело ответа
      * @param ex Exception
      * @param response  HttpServletResponse
      */
-    @ExceptionHandler(value = {EmptyResultException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class})
     public void handleException(Exception ex, HttpServletResponse response)
                                                             throws IOException {
-        response.setStatus(HttpStatus.OK.value());
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
         response.setContentType("application/json");
         response.getWriter().write(
                 objectMapper.writeValueAsString(

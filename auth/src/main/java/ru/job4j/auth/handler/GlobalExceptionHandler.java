@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Метод глобально отлавливает  и обрабатывает исключения типа
-     * EmptyResultException, возникающих во всех контроллерах,
+     * NullPointerException, возникающих во всех контроллерах,
      * меняет статус и тело ответа
      * @param ex Exception
      * @param response  HttpServletResponse

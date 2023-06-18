@@ -1,7 +1,5 @@
 package ru.job4j.auth.util.validation;
 
-import ru.job4j.auth.exception.EmptyResultException;
-
 import java.util.List;
 
 /**
@@ -36,14 +34,10 @@ public class ValidateUtil {
     /**
      * Проверяет существование результирующих данных
      * @param resultingData результирующие данные
-     * @return список данных
+     * @return результат проверки в виде boolean
      * @param <T> тип данных на входе
      */
-    public static <T> List<T> checkEmptyResult(List<T> resultingData)
-                                                    throws EmptyResultException {
-        if (resultingData.isEmpty()) {
-            throw new EmptyResultException("Return result is empty!");
-        }
-        return resultingData;
+    public static <T> boolean checkEmptyResult(List<T> resultingData) {
+        return resultingData.isEmpty();
     }
 }
