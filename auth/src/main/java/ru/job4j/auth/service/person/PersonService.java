@@ -2,6 +2,7 @@ package ru.job4j.auth.service.person;
 
 import ru.job4j.auth.domain.Person;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,13 @@ public interface PersonService {
      * @return возвращает результат операции в виде boolean
      */
     boolean update(Person person);
+
+    /**
+     * Выполняет частичное обновление данных о пользователе в хранилище
+     * @param person пользователь
+     * @return возвращает результат операции в виде boolean
+     */
+    boolean partialUpdate(Person person) throws InvocationTargetException, IllegalAccessException;
 
     /**
      * Находит пользователя в хранилище по login

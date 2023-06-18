@@ -13,6 +13,7 @@ import ru.job4j.auth.util.validation.ValidateUtil;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -64,13 +65,19 @@ public class PersonController {
 
     @PutMapping("/")
     public ResponseEntity<Void> update(@RequestBody Person person) {
-        var username = person.getLogin();
-        var password = person.getPassword();
-        ValidateUtil.validateUserCredential(username, password);
-        person.setPassword(encoder.encode(password));
+        ValidateUtil.validateUserCredentials(person);
+        person.setPassword(encoder.encode(person.getPassword()));
         return personService.update(person)
                 ? ResponseEntity.ok().build()
                 : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PatchMapping("/")
+    public ResponseEntity<Void> partialUpdate(@RequestBody Person person)
+                        throws InvocationTargetException, IllegalAccessException {
+        return personService.partialUpdate(person)
+                ? ResponseEntity.accepted().build()
+                : ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/{id}")

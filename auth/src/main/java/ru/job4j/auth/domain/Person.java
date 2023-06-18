@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 /**
  * Модель данных пользователь
@@ -21,4 +22,10 @@ public class Person {
     private String login;
 
     private String password;
+
+    private String email;
+
+    private String gender;
+
+    private Date birthday;
 }

@@ -29,13 +29,9 @@ public class RegistrationController {
     private final ObjectMapper objectMapper;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Void> signUp(@RequestBody Map<String, String> body) {
-        var username = body.get("login");
-        var password = body.get("password");
-        ValidateUtil.validateUserCredential(username, password);
-        Person person = new Person();
-        person.setLogin(username);
-        person.setPassword(encoder.encode(password));
+    public ResponseEntity<Void> signUp(@RequestBody Person person) {
+        ValidateUtil.validateUserCredentials(person);
+        person.setPassword(encoder.encode(person.getPassword()));
         return personService.save(person)
                 ? ResponseEntity.status(HttpStatus.CREATED).build()
                 : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
