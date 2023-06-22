@@ -26,13 +26,6 @@ public interface PersonService {
     boolean update(Person person);
 
     /**
-     * Выполняет частичное обновление данных о пользователе в хранилище
-     * @param person пользователь
-     * @return возвращает результат операции в виде boolean
-     */
-    boolean partialUpdate(Person person) throws InvocationTargetException, IllegalAccessException;
-
-    /**
      * Находит пользователя в хранилище по login
      * @param login login пользователя
      * @return Optional.of(person), если пользователь найден,

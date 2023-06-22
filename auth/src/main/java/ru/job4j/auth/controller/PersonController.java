@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.auth.domain.Person;
+import ru.job4j.auth.dto.UserCredentials;
 import ru.job4j.auth.service.person.PersonService;
 import ru.job4j.auth.util.validation.ValidateUtil;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * REST-Контроллер пользователей
@@ -73,11 +75,12 @@ public class PersonController {
     }
 
     @PatchMapping("/")
-    public ResponseEntity<Void> partialUpdate(@RequestBody Person person)
-                        throws InvocationTargetException, IllegalAccessException {
-        return personService.partialUpdate(person)
-                ? ResponseEntity.accepted().build()
-                : ResponseEntity.badRequest().build();
+    public ResponseEntity<Void> partialUpdate(@RequestBody UserCredentials
+                                                          userCredentials) {
+        ResponseEntity<Person> response = findById(userCredentials.getId());
+        Person person = response.getBody();
+        person.setPassword(userCredentials.getPassword());
+        return update(person);
     }
 
     @DeleteMapping("/{id}")

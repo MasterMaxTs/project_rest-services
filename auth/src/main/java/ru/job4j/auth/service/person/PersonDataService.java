@@ -50,49 +50,6 @@ public class PersonDataService implements PersonService {
     }
 
     @Override
-    public boolean partialUpdate(Person person)
-                    throws InvocationTargetException, IllegalAccessException {
-        Optional<Person> currentOptional = findById(person.getId());
-        if (currentOptional.isEmpty()) {
-            log.error("User with id={} partial update error! No found!", person.getId());
-            throw new IllegalArgumentException("User partial update error! "
-                                                    + "User no found!");
-        }
-        Person current = currentOptional.get();
-        Method[] methods = current.getClass().getDeclaredMethods();
-        Map<String, Method> namePerMethod = new HashMap<>();
-        for (Method method
-                : methods) {
-            String name = method.getName();
-            if (name.startsWith("get") || name.startsWith("set")) {
-                namePerMethod.put(name, method);
-            }
-        }
-        for (String name
-                : namePerMethod.keySet()) {
-            if (name.startsWith("get")) {
-                Method getMethod = namePerMethod.get(name);
-                Method setMethod = namePerMethod.get(name.replace("get", "set"));
-                if (setMethod == null) {
-                    log.error("User with id={} partial update error!"
-                            + "Impossible invoke set method from object : {} "
-                            + "Check set and get pairs.", person.getId(), current);
-                    throw new IllegalArgumentException(
-                            String.format("User partial update error! "
-                                    + "Impossible invoke set method from "
-                                    + "object : %s . Check set and get pairs.",
-                                    current));
-                }
-                Object newValue = getMethod.invoke(person);
-                if (newValue != null) {
-                    setMethod.invoke(current, newValue);
-                }
-            }
-        }
-        return save(current);
-    }
-
-    @Override
     public Optional<Person> findByLogin(String login) {
         return repository.findByLogin(login);
     }
