@@ -6,11 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.auth.domain.Person;
 import ru.job4j.auth.repository.PersonCrudRepository;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -25,18 +21,9 @@ public class PersonDataService implements PersonService {
 
     @Override
     public boolean save(Person person) {
-        boolean rsl = false;
-        try {
-            repository.save(person);
-            log.info("User with id={} created/updated successfully!", person.getId());
-            rsl = true;
-        } catch (RuntimeException ex) {
-           log.error("User creation/update error."
-                        + " The username = {} or email = {} address is already in"
-                           + " use in the application. Enter other values!",
-                        person.getLogin(), person.getEmail());
-        }
-        return rsl;
+        repository.save(person);
+        log.info("User with id={} created/updated successfully!", person.getId());
+        return true;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package ru.job4j.auth.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +11,8 @@ import ru.job4j.auth.dto.UserCredentials;
 import ru.job4j.auth.service.person.PersonService;
 import ru.job4j.auth.util.validation.ValidateUtil;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * REST-Контроллер пользователей
@@ -36,11 +31,6 @@ public class PersonController {
      * зависимость от BCryptPasswordEncoder
      */
     private final BCryptPasswordEncoder encoder;
-
-    /**
-     * зависимость от ObjectMapper
-     */
-    private final ObjectMapper objectMapper;
 
     @GetMapping("/")
     public ResponseEntity<List<Person>> findAll() {
@@ -66,16 +56,16 @@ public class PersonController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Void> update(@RequestBody Person person) {
-        ValidateUtil.validateUserCredentials(person);
+    public ResponseEntity<?> update(@Valid @RequestBody Person person) {
         person.setPassword(encoder.encode(person.getPassword()));
         return personService.update(person)
                 ? ResponseEntity.ok().build()
-                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                : ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(String.format("User with id=%d is not found!", person.getId()));
     }
 
     @PatchMapping("/")
-    public ResponseEntity<Void> partialUpdate(@RequestBody UserCredentials
+    public ResponseEntity<?> partialUpdate(@Valid @RequestBody UserCredentials
                                                           userCredentials) {
         ResponseEntity<Person> response = findById(userCredentials.getId());
         Person person = response.getBody();
@@ -84,28 +74,9 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+    public ResponseEntity<?> delete(@PathVariable("id") int id) {
         return personService.deleteById(id)
                 ? ResponseEntity.ok().build()
                 : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
-
-    /**
-     * Метод отлавливает  и обрабатывает исключения типа
-     * IllegalArgumentException, возникающих в контроллере,
-     * меняет статус и тело ответа
-     * @param ex Exception
-     * @param response  HttpServletResponse
-     */
-    @ExceptionHandler(value = {IllegalArgumentException.class})
-    public void handleException(Exception ex, HttpServletResponse response)
-                                                            throws IOException {
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
-        response.setContentType("application/json");
-        response.getWriter().write(
-                objectMapper.writeValueAsString(
-                        Map.of("message", ex.getMessage(),
-                                "type", ex.getClass())
-                ));
     }
 }
