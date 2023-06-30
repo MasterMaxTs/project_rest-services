@@ -13,22 +13,22 @@ public class JWTConstants {
     /**
      * секретный ключ для генерации JWT
      */
-    static String SECRET;
+    static String secret;
 
     /**
      * время жизни JWT
      */
-    static long EXPIRATION_TIME;
+    static long expirationTime;
 
     /**
      * токен префикс
      */
-    static String TOKEN_PREFIX;
+    static String tokenPrefix;
 
     /**
      * название заголовка
      */
-    static String HEADER_STRING;
+    static String headerString;
 
     /**
      * Инициализация статической константы
@@ -36,8 +36,8 @@ public class JWTConstants {
      * @param secret секретный ключ для генерации JWT
      */
     @Value("${jwt.authentication.filter.secret}")
-    public void setSECRET(String secret) {
-        JWTConstants.SECRET = secret;
+    public void setSecret(String secret) {
+        JWTConstants.secret = secret;
     }
 
     /**
@@ -47,7 +47,7 @@ public class JWTConstants {
      */
     @Value("${jwt.authentication.filter.expiration-time}")
     public void setExpirationTime(String expirationTime) {
-        JWTConstants.EXPIRATION_TIME = Long.parseLong(expirationTime);
+        JWTConstants.expirationTime = Long.parseLong(expirationTime);
     }
 
     /**
@@ -57,7 +57,7 @@ public class JWTConstants {
      */
     @Value("${jwt.authentication.filter.token-prefix}")
     public void setTokenPrefix(String tokenPrefix) {
-        JWTConstants.TOKEN_PREFIX = tokenPrefix;
+        JWTConstants.tokenPrefix = tokenPrefix;
     }
 
     /**
@@ -67,6 +67,6 @@ public class JWTConstants {
      */
     @Value("${jwt.authentication.filter.header-string}")
     public void setHeaderString(String headerString) {
-        JWTConstants.HEADER_STRING = headerString;
+        JWTConstants.headerString = headerString;
     }
 }

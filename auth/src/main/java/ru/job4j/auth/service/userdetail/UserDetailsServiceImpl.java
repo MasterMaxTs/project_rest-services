@@ -1,4 +1,4 @@
-package ru.job4j.auth.service.user_detail;
+package ru.job4j.auth.service.userdetail;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.User;
