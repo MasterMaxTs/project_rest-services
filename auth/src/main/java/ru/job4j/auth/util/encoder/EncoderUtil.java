@@ -23,6 +23,6 @@ public class EncoderUtil {
      * @param args массив из аргументов командной строки
      */
     public static void main(String[] args) {
-        showEncodedPasswordByBcrypt("root");
+        showEncodedPasswordByBcrypt("adminka");
     }
 }
